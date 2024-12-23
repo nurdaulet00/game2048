@@ -8,12 +8,11 @@ import java.sql.ResultSet;
 
 public class DatabaseManager {
 
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/2048"; // Замените на свой URL
-    private static final String USER = "root"; // Ваше имя пользователя для базы данных
-    private static final String PASSWORD = "Geekin2024"; // Ваш пароль для базы данных
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/2048";
+    private static final String USER = "root";
+    private static final String PASSWORD = "Geekin2024";
     private Connection connection;
 
-    // Метод для инициализации подключения
     public void connect() {
         try {
             if (connection == null || connection.isClosed()) {
@@ -26,13 +25,11 @@ public class DatabaseManager {
         }
     }
 
-    // Метод для сохранения очков
     public void saveScore(String playerName, int score) {
-        connect(); // Убедитесь, что соединение установлено перед выполнением запроса
+        connect();
 
         String query = "INSERT INTO score (idplayer, score, player_name) VALUES (?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            // Получаем id игрока из таблицы user
             String getUserIdQuery = "SELECT iduser FROM user WHERE name = ?";
             try (PreparedStatement userStmt = connection.prepareStatement(getUserIdQuery)) {
                 userStmt.setString(1, playerName);
@@ -52,7 +49,6 @@ public class DatabaseManager {
         }
     }
 
-    // Метод для получения топ-5 очков
     public void getTopScores(int limit) {
         connect();
 
